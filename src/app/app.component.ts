@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {MenuItem, PrimeNGConfig} from "primeng/api";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'service-frontend';
+  title = 'Service';
+  items: MenuItem[] = [
+    {
+      label: 'Repair Shops',
+      icon: 'pi pi-wrench',
+      routerLink: ['/repair-shops']
+    },
+    {
+      label: 'Edit',
+      icon: 'pi pi-fw pi-pencil',
+      items: [
+        {label: 'Delete', icon: 'pi pi-fw pi-trash'},
+        {label: 'Refresh', icon: 'pi pi-fw pi-refresh'}
+      ]
+    }
+  ];
+
+  constructor(private readonly primeNgConfig: PrimeNGConfig) {
+    primeNgConfig.ripple = true
+  }
 }

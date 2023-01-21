@@ -1,0 +1,37 @@
+<ng-container *ngIf="(repairShop$ | async) as repairShop; else loading">
+  <p-card class="h-full w-full" [header]="repairShop.name || ''">
+    <ul class="list-none">
+      <li>
+        <span>
+          <i class="pi pi-briefcase"></i>
+          {{repairShop.address | address}}
+        </span>
+      </li>
+      <li>
+        <span>
+          <i class="pi pi-car"></i>
+          {{repairShop.manufacturer?.name}}
+        </span>
+      </li>
+    </ul>
+    <ng-container *ngIf="(jobs$ | async) as jobs">
+      <p-dataView [value]="jobs">
+        <div class="col-12">
+          <p-accordion>
+            <ng-template let-job pTemplate="listItem">
+              <div class="w-full">
+                <p-accordionTab [header]="(job.started | date) || ''">
+                  hi
+                </p-accordionTab>
+              </div>
+            </ng-template>
+          </p-accordion>
+        </div>
+      </p-dataView>
+    </ng-container>
+  </p-card>
+</ng-container>
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>
+

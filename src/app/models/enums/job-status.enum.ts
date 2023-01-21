@@ -1,0 +1,8 @@
+export enum JobStatus {
+  OPEN = 'OPEN',
+  IN_PROGRESS = 'IN_PROGRESS',
+  ON_HOLD = 'ON_HOLD',
+  POSTPONED = 'POSTPONED',
+  DONE = 'DONE',
+  CANCELED = 'CANCELED',
+}

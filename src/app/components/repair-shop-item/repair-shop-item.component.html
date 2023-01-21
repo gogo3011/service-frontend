@@ -1,0 +1,22 @@
+<p-card [header]="repairShop.name || ''" class="h-full w-full">
+  <ul class="list-none">
+    <li>
+        <span>
+          <i class="pi pi-briefcase"></i>
+          {{repairShop.address | address}}
+        </span>
+    </li>
+    <li>
+        <span>
+          <i class="pi pi-car"></i>
+          {{repairShop.manufacturer?.name}}
+        </span>
+    </li>
+
+  </ul>
+  <ng-template pTemplate="footer">
+    <p-button label="View details" icon="pi pi-eye" [routerLink]="['/repair-shop-details', repairShop.id]"></p-button>
+    <p-button label="Add a job" styleClass="p-button-secondary" class="pl-3" icon="pi pi-plus"></p-button>
+    <p-button styleClass="p-button-rounded p-button-outlined" class="pl-3" icon="pi pi-pencil" (click)="edit()"></p-button>
+  </ng-template>
+</p-card>

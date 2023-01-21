@@ -1,0 +1,9 @@
+export enum Specialization {
+  DRIVETRAIN = 'DRIVETRAIN',
+  ENGINE = 'ENGINE',
+  TRANSMISSION = 'TRANSMISSION',
+  BRAKE = 'BRAKE',
+  TYRES = 'TYRES',
+  SUSPENSION = 'SUSPENSION',
+  OIL = 'OIL',
+}
