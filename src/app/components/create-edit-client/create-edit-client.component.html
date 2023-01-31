@@ -1,0 +1,39 @@
+<div class="w-full">
+  <form [formGroup]="form" class="w-full grid">
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText placeholder="First name" formControlName="firstName">
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText placeholder="Last name" formControlName="lastName">
+      </div>
+    </div>
+    <div formGroupName="address" class="grid w-full">
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="City" formControlName="city">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Country Code" formControlName="countryCode">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Street" formControlName="street">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="House Number" formControlName="houseNumber">
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="col-12 align-content-end">
+    <p-button label="Save" (click)="save()" [disabled]="form.invalid" icon="pi pi-save"></p-button>
+  </div>
+</div>

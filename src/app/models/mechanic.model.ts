@@ -7,5 +7,5 @@ export class Mechanic extends BaseEntity {
   lastName?: string;
   age?: number;
   repairShop?: RepairShop;
-  specialization?: Specialization[];
+  specializations?: Specialization[];
 }

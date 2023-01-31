@@ -3,12 +3,15 @@ import {Job} from "../../models/job.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MaybeEmpty} from "../create-edit-repair-shop/create-edit-repair-shop.component";
 import {RepairShop} from "../../models/repair-shop.model";
-import {Car} from "../../models/car.model";
-import {User} from "../../models/user.model";
 import {Mechanic} from "../../models/mechanic.model";
 import {JobStatus} from "../../models/enums/job-status.enum";
 import {BeDataService} from "../../services/be-data/be-data.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {Vehicle} from "../../models/vehicle.model";
+import {Specialization} from "../../models/enums/specialization.model";
+import {BaseFilter} from "../../models/filters/base-filter";
+import {BehaviorSubject, combineLatest, filter, map, of, ReplaySubject, Subject, switchMap} from "rxjs";
+import {capitalizeFirstLetter} from "../../utils";
 
 @Component({
   selector: 'app-create-edit-job',
@@ -17,23 +20,55 @@ import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 })
 export class CreateEditJobComponent implements OnInit {
   job?: Job;
-  repairShop?: RepairShop;
+
+  userId: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  vehicleOptions$ =
+    this.userId.pipe(
+      filter(val => !!val),
+      switchMap((userId) => this.beData.listVehiclesByUserId$(userId, {
+        ...new BaseFilter(),
+        pageSize: 100
+      })),
+      map((vehicles) => vehicles.map(vehicle =>
+        ({label: vehicle.car?.model?.manufacturer?.name + ' ' + vehicle.car?.model?.modelName, value: vehicle})))
+    );
+
+  vehicleSelection$: BehaviorSubject<any> = new BehaviorSubject(null);
+  repairShopOptions$ = this.vehicleSelection$.pipe(
+    filter(val => !!val),
+    switchMap((vehicle) =>
+      this.beData.listRepairShopByManufacturerId$(vehicle.car?.model?.manufacturer?.id || 0, new BaseFilter())),
+    map(repairShops => repairShops.map(shop => ({label: shop.name, value: shop})))
+  );
+
+  specializationOptions$ = of(Object.values(Specialization).map((key) =>
+    ({label: capitalizeFirstLetter(key), value: key})));
+
+  specializationSelection$: BehaviorSubject<any> = new BehaviorSubject(null);
+  repairShopSelection$: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  mechanics$ = combineLatest([this.specializationSelection$, this.repairShopSelection$]).pipe(
+    filter(([val1, val2]) => !!val1 && !!val2),
+    switchMap(([specialization, repairShop]) =>
+      this.beData.listByRepairShopIdAndSpecialization$(repairShop.id || 0, specialization, new BaseFilter())),
+    map(mechanics => mechanics.map(mechanic => ({
+      label: mechanic.firstName + ' ' + mechanic.lastName,
+      value: mechanic
+    })))
+  );
+
+  jobStatusOptions$ = of(Object.values(JobStatus).map((key) =>
+    ({label: capitalizeFirstLetter(key), value: key})));
 
   readonly form = new FormGroup({
-    id: new FormControl<MaybeEmpty<number>>(0),
-    repairShop: new FormControl<MaybeEmpty<RepairShop>>(this.repairShop),
-    vehicle: new FormGroup({
-      registrationNumber: new FormControl<MaybeEmpty<string>>('', [Validators.required, Validators.minLength(3)]),
-      vin: new FormControl<MaybeEmpty<string>>('', [Validators.required]),
-      dateOfManufacturing: new FormControl<MaybeEmpty<Date>>(new Date(), Validators.required),
-      color: new FormControl<MaybeEmpty<string>>('', Validators.required),
-      car: new FormControl<MaybeEmpty<Car>>(null, Validators.required),
-      owner: new FormControl<MaybeEmpty<User>>(null, Validators.required)
-    }),
+    vehicle: new FormControl<MaybeEmpty<Vehicle>>(null, Validators.required),
+    jobType: new FormControl<MaybeEmpty<Specialization>>(null, Validators.required),
+    repairShop: new FormControl<MaybeEmpty<RepairShop>>(null, Validators.required),
     mechanic: new FormControl<MaybeEmpty<Mechanic>>(null, Validators.required),
     started: new FormControl<MaybeEmpty<Date>>(new Date(), Validators.required),
-    finished: new FormControl<MaybeEmpty<Date>>(new Date(), Validators.required),
-    jobStatus: new FormControl<MaybeEmpty<JobStatus>>(JobStatus.OPEN, Validators.required)
+    finished: new FormControl<MaybeEmpty<Date>>(null),
+    status: new FormControl<MaybeEmpty<JobStatus>>(JobStatus.OPEN, Validators.required)
   });
 
   constructor(private readonly beData: BeDataService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
@@ -41,24 +76,49 @@ export class CreateEditJobComponent implements OnInit {
 
   ngOnInit(): void {
     this.job = this.config.data.job;
-    this.repairShop = this.config.data.repairShop;
-    if (this.job && !!this.job.id) {
+    this.userId.next(this.job ? this.job.vehicle?.owner?.id : this.config.data.clientId);
+    if (this.job) {
       this.patchJob(this.job);
+      if (this.job.vehicle) {
+        this.vehicleSelection$.next(this.job.vehicle);
+      }
+      if (this.job.repairShop) {
+        this.repairShopSelection$.next(this.job.repairShop)
+      }
+      if (this.job.jobType) {
+        this.specializationSelection$.next(this.job.jobType);
+      }
     }
   }
 
   patchJob(job: Job): void {
-    this.form.controls.id.patchValue(job.id);
     this.form.controls.repairShop.patchValue(job.repairShop);
-    this.form.controls.vehicle.controls.registrationNumber.patchValue(job.vehicle?.registrationNumber);
-    this.form.controls.vehicle.controls.vin.patchValue(job.vehicle?.vin);
-    this.form.controls.vehicle.controls.dateOfManufacturing.patchValue(new Date(job.vehicle?.dateOfManufacturing || ''));
-    this.form.controls.vehicle.controls.color.patchValue(job.vehicle?.color);
-    this.form.controls.vehicle.controls.car.patchValue(job.vehicle?.car);
-    this.form.controls.vehicle.controls.owner.patchValue(job.vehicle?.owner);
+    this.form.controls.jobType.patchValue(job.jobType);
+    this.form.controls.vehicle.patchValue(job.vehicle);
     this.form.controls.mechanic.patchValue(job.mechanic);
-    this.form.controls.started.patchValue(new Date(job.started || ''));
-    this.form.controls.finished.patchValue(new Date(job.finished || ''));
-    this.form.controls.jobStatus.patchValue(job.jobStatus);
+    this.form.controls.started.patchValue(new Date(job.started || new Date()));
+    this.form.controls.finished.patchValue(new Date(job.finished || new Date()));
+    this.form.controls.status.patchValue(job.status);
+  }
+
+  formToJob(): Job {
+    const job = this.job || new Job();
+    job.vehicle = this.form.value.vehicle || undefined;
+    job.jobType = this.form.value.jobType || undefined;
+    job.mechanic = this.form.value.mechanic || undefined;
+    job.vehicle = this.form.value.vehicle || undefined;
+    job.started = this.form.value.started || undefined;
+    job.finished = this.form.value.finished || undefined;
+    job.status = this.form.value.status || undefined;
+    job.repairShop = this.form.value.repairShop || undefined;
+    return job;
+  }
+
+  save(): void {
+    this.beData.saveJob$(this.formToJob()).subscribe(res => {
+      if (res) {
+        this.ref.close(res);
+      }
+    })
   }
 }

@@ -5,7 +5,7 @@ import {User} from "./user.model";
 export class Vehicle extends BaseEntity {
   registrationNumber?: string;
   vin?: string;
-  dateOfManufacturing?: string;
+  dateOfManufacturing?: Date;
   color?: string;
   car?: Car;
   owner?: User;

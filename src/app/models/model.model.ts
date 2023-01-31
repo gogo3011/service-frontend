@@ -3,9 +3,9 @@ import {Manufacturer} from "./manufacturer.model";
 import {VehicleType} from "./enums/vehicle-type.model";
 
 export class Model extends BaseEntity {
-  manufacturer?: Manufacturer;
+  manufacturer?: Manufacturer | null;
   modelName?: string;
   vehicleType?: VehicleType;
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
 }

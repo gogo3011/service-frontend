@@ -1,0 +1,37 @@
+<div class="w-full">
+  <form [formGroup]="form" class="w-full grid">
+    <div class="col-12">
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <p-dropdown styleClass="w-full" [options]="(carOptions$ | async) || []" placeholder="Car"
+                      formControlName="car" appendTo="body">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Registration number" formControlName="registrationNumber">
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Vin" formControlName="vin">
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <p-calendar styleClass="w-full" placeholder="Date of Manufacturing" name="dateOfManufacturing"
+                      formControlName="dateOfManufacturing" appendTo="body"></p-calendar>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Color" formControlName="color">
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="col-12 align-content-end">
+    <p-button label="Save" (click)="save()" [disabled]="form.invalid" icon="pi pi-save"></p-button>
+  </div>
+</div>

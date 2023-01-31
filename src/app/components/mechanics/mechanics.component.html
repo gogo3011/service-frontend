@@ -1,0 +1,35 @@
+<ng-container *ngIf="(mechanics$ | async) as mechanics">
+  <div class="grid">
+    <div class="col-12">
+      <button pButton icon="pi pi-plus"
+              label="Register a mechanic" (click)="registerMechanic()"></button>
+    </div>
+    <div class="col-12">
+      <p-table [value]="mechanics" [scrollable]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Age</th>
+            <th>Repair Shop</th>
+            <th>Specialization</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-mechanic>
+          <tr>
+            <td>{{mechanic.firstName}}</td>
+            <td>{{mechanic.lastName}}</td>
+            <td>{{mechanic.age}}</td>
+            <td>{{mechanic.repairShop?.name}}</td>
+            <td>{{mechanic.specializations.join(', ')}}</td>
+            <td>
+              <button pButton label="Edit" (click)="editMechanic(mechanic)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</ng-container>
+

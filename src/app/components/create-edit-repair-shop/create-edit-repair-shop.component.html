@@ -27,6 +27,12 @@
         </div>
       </div>
     </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <p-dropdown styleClass="w-full" placeholder="Specialized Manufacturer"
+                      [options]="(manufacturerOptions$ | async)!" formControlName="manufacturer" appendTo="body"></p-dropdown>
+        </div>
+      </div>
   </form>
   <div class="col-12 align-content-end">
     <p-button label="Save" (click)="save()" [disabled]="form.invalid" icon="pi pi-save"></p-button>

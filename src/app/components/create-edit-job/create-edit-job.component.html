@@ -2,33 +2,45 @@
   <form [formGroup]="form" class="w-full grid">
     <div class="col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText placeholder="Name" formControlName="name">
+        <p-dropdown styleClass="w-full" placeholder="Vehicle" [options]="(vehicleOptions$ | async) || []"
+                    formControlName="vehicle" (onChange)="vehicleSelection$.next($event.value)"></p-dropdown>
       </div>
     </div>
-    <div formGroupName="vehicle" class="grid w-full">
-      <div class="col-6">
-        <div class="p-inputgroup">
-          <input type="text" pInputText placeholder="City" formControlName="city">
-        </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <p-dropdown styleClass="w-full" placeholder="Job Type" [options]="(specializationOptions$ | async) || []"
+                    formControlName="jobType" (onChange)="specializationSelection$.next($event.value)"></p-dropdown>
       </div>
-      <div class="col-6">
-        <div class="p-inputgroup">
-          <input type="text" pInputText placeholder="Country Code" formControlName="countryCode">
-        </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <p-dropdown styleClass="w-full" placeholder="Repair shop" [options]="(repairShopOptions$ | async) || []"
+                    formControlName="repairShop" (onChange)="repairShopSelection$.next($event.value)"></p-dropdown>
       </div>
-      <div class="col-6">
-        <div class="p-inputgroup">
-          <input type="text" pInputText placeholder="Street" formControlName="street">
-        </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <p-dropdown styleClass="w-full" placeholder="Mechanic" [options]="(mechanics$ | async) || []"
+                    formControlName="mechanic"></p-dropdown>
       </div>
-      <div class="col-6">
-        <div class="p-inputgroup">
-          <input type="text" pInputText placeholder="House Number" formControlName="houseNumber">
-        </div>
+    </div>
+    <div class="col-6">
+      <div class="p-inputgroup">
+        <p-calendar placeholder="Started" formControlName="started"></p-calendar>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-inputgroup">
+        <p-calendar placeholder="Finished" formControlName="finished"></p-calendar>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="p-inputgroup">
+        <p-dropdown styleClass="w-full" [options]="(jobStatusOptions$ | async) || []" placeholder="Job Status" formControlName="status"></p-dropdown>
       </div>
     </div>
   </form>
   <div class="col-12 align-content-end">
-    <p-button label="Save" [disabled]="form.invalid" icon="pi pi-save"></p-button>
+    <p-button label="Save" (click)="save()" [disabled]="form.invalid" icon="pi pi-save"></p-button>
   </div>
 </div>

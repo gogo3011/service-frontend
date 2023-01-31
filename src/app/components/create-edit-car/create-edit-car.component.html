@@ -1,0 +1,76 @@
+<div class="w-full">
+  <form [formGroup]="form" class="w-full grid">
+    <div class="col-12">
+      <div formGroupName="model" class="grid w-full">
+        <div class="col-12">
+          <div class="p-inputgroup">
+            <p-dropdown styleClass="w-full" [options]="(manufacturerOptions$ | async) || []" placeholder="Manufacturer"
+                        formControlName="manufacturer" appendTo="body">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <input type="text" pInputText placeholder="Model name" formControlName="modelName">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <p-dropdown styleClass="w-full" [options]="(vehicleType$ | async) || []" placeholder="Vehicle type"
+                        formControlName="vehicleType" appendTo="body">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <p-calendar styleClass="w-full" name="startDate" formControlName="startDate" appendTo="body"></p-calendar>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <p-calendar styleClass="w-full" name="endDate" formControlName="endDate" appendTo="body"></p-calendar>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div formGroupName="engine" class="grid w-full">
+        <div class="col-12">
+          <div class="p-inputgroup">
+            <p-dropdown styleClass="w-full" [options]="(manufacturerOptions$ | async) || []" placeholder="Manufacturer"
+                        formControlName="manufacturer" [showClear]="true" appendTo="body">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <input type="text" pInputText placeholder="Engine name" formControlName="name">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <input type="number" pInputText placeholder="Displacement" formControlName="displacement">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <p-dropdown styleClass="w-full" [options]="(fuelType$ | async) || []" placeholder="Fuel type" formControlName="fuelType" appendTo="body">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="p-inputgroup">
+            <input type="number" pInputText placeholder="Horse Power" formControlName="horsePower">
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Variant" formControlName="variant">
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="col-12 align-content-end">
+    <p-button label="Save" (click)="save()" [disabled]="form.invalid" icon="pi pi-save"></p-button>
+  </div>
+</div>

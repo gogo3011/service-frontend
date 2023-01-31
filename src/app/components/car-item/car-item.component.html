@@ -1,0 +1,25 @@
+<p-card [header]="car.model | model" class="h-full w-full">
+  <ul class="list-none p-0">
+    <li>
+        <span>
+          <i class="pi pi-window-maximize"></i>
+            {{car.engine | engine}}
+        </span>
+    </li>
+    <li *ngIf="car.variant">
+        <span>
+          <i class="pi pi-qrcode"></i>
+            {{car.variant}}
+        </span>
+    </li>
+    <li *ngIf="car.model?.startDate">
+        <span>
+          <i class="pi pi-qrcode"></i>
+            {{car.model?.startDate | date:'YYYY'}} - {{car.model?.endDate | date:'YYYY'}}
+        </span>
+    </li>
+  </ul>
+  <ng-template pTemplate="footer">
+    <p-button styleClass="p-button-rounded p-button-outlined" class="pl-3" icon="pi pi-pencil" (click)="edit()"></p-button>
+  </ng-template>
+</p-card>

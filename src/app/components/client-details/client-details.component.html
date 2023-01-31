@@ -1,0 +1,45 @@
+<ng-container *ngIf="(client$ | async) as client">
+  <div class="grid">
+    <div class="col-12">
+      <p-card class="w-full">
+        <ng-template pTemplate="header">
+          {{client?.firstName}} {{client?.lastName}}
+        </ng-template>
+        <ul class="list-none">
+          <li>
+            {{client?.address | address}}
+          </li>
+        </ul>
+      </p-card>
+    </div>
+    <div class="col-12">
+      <button pButton label="Register a vehicle" (click)="registerVehicle(client)"></button>
+    </div>
+    <div class="col-12">
+      <p-table [value]="(vehicles$ | async) || []" [scrollable]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th>Color</th>
+            <th>Vin</th>
+            <th>Registration</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vehicle>
+          <tr>
+            <td>{{vehicle.car?.model?.manufacturer?.name}}</td>
+            <td>{{vehicle.car?.model?.modelName}}</td>
+            <td>{{vehicle.color}}</td>
+            <td>{{vehicle.vin}}</td>
+            <td>{{vehicle.registrationNumber}}</td>
+            <td>
+              <button pButton label="Edit" (click)="editVehicle(vehicle, client)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</ng-container>

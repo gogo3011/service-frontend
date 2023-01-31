@@ -1,1 +1,15 @@
-<p>client-item works!</p>
+<p-card [header]="(client.firstName || '')  + ' ' + (client.lastName || '')" class="h-full w-full">
+  <ul class="list-none">
+    <li>
+        <span>
+          <i class="pi pi-briefcase"></i>
+          {{client.address | address}}
+        </span>
+    </li>
+  </ul>
+  <ng-template pTemplate="footer">
+    <p-button [routerLink]="['/client-details', client.id]" label="View register vehicles" styleClass="p-button" icon="pi pi-eye"></p-button>
+    <p-button label="Add a job" styleClass="p-button-secondary" (click)="addJob()" class="pl-3" icon="pi pi-plus"></p-button>
+    <p-button styleClass="p-button-rounded p-button-outlined" class="pl-3" icon="pi pi-pencil" (click)="edit()"></p-button>
+  </ng-template>
+</p-card>

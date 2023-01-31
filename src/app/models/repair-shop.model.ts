@@ -6,6 +6,6 @@ import {Address} from "./address.model";
 export class RepairShop extends BaseEntity {
   name?: string | null;
   mechanics?: Mechanic[];
-  manufacturer?: Manufacturer;
+  specializedInManufacturer?: Manufacturer;
   address?: Address;
 }

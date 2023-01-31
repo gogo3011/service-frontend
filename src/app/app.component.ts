@@ -11,16 +11,28 @@ export class AppComponent {
   items: MenuItem[] = [
     {
       label: 'Repair Shops',
-      icon: 'pi pi-wrench',
+      icon: 'pi pi-box',
       routerLink: ['/repair-shops']
     },
     {
-      label: 'Edit',
-      icon: 'pi pi-fw pi-pencil',
-      items: [
-        {label: 'Delete', icon: 'pi pi-fw pi-trash'},
-        {label: 'Refresh', icon: 'pi pi-fw pi-refresh'}
-      ]
+      label: 'Clients',
+      icon: 'pi pi-user',
+      routerLink: ['/clients']
+    },
+    {
+      label: 'Cars',
+      icon: 'pi pi-car',
+      routerLink: ['/cars']
+    },
+    {
+      label: 'Mechanics',
+      icon: 'pi pi-prime',
+      routerLink: ['/mechanics']
+    },
+    {
+      label: 'Jobs',
+      icon: 'pi pi-wrench',
+      routerLink: ['/jobs']
     }
   ];
 

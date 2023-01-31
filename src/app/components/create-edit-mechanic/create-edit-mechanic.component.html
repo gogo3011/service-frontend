@@ -1,0 +1,37 @@
+<div class="w-full">
+  <form [formGroup]="form" class="w-full grid">
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="First name" formControlName="firstName">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Last name" formControlName="lastName">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="p-inputgroup">
+          <input type="number" pInputText placeholder="Age" formControlName="age">
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <p-dropdown styleClass="w-full" [options]="(repairShopOptions$ | async) || []" placeholder="Repair shop"
+                      formControlName="repairShop" appendTo="body">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <p-multiSelect styleClass="w-full" [options]="(specializationOptions$ | async) || []"
+                         placeholder="Specializations"
+                         formControlName="specializations" appendTo="body" display="chip">
+          </p-multiSelect>
+        </div>
+      </div>
+  </form>
+  <div class="col-12 align-content-end">
+    <p-button label="Save" (click)="save()" [disabled]="form.invalid" icon="pi pi-save"></p-button>
+  </div>
+</div>
