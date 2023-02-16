@@ -6,7 +6,7 @@
           {{repairShop.address | address}}
         </span>
     </li>
-    <li>
+    <li *ngIf="!!repairShop.specializedInManufacturer?.name">
         <span>
           <i class="pi pi-car"></i>
           {{repairShop.specializedInManufacturer?.name}}

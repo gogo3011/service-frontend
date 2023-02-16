@@ -15,19 +15,30 @@
       </li>
     </ul>
     <ng-container *ngIf="(jobs$ | async) as jobs">
-      <p-dataView [value]="jobs">
-        <div class="col-12">
-          <p-accordion>
-            <ng-template let-job pTemplate="listItem">
-              <div class="w-full">
-                <p-accordionTab [header]="(job.started | date) || ''">
-                  hi
-                </p-accordionTab>
-              </div>
-            </ng-template>
-          </p-accordion>
-        </div>
-      </p-dataView>
+      <p-table [value]="jobs" [scrollable]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Repair shop</th>
+            <th>Vehicle</th>
+            <th>Mechanic</th>
+            <th>Job type</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-job>
+          <tr>
+            <td>{{job.repairShop?.name}}</td>
+            <td>{{job.vehicle?.car?.model?.modelName}}</td>
+            <td>{{job.mechanic?.firstName}} {{job.mechanic?.lastName}}</td>
+            <td>{{job.jobType}}</td>
+            <td>{{job.status}}</td>
+            <td>
+              <button pButton label="Edit" (click)="editJob(job)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </ng-container>
   </p-card>
 </ng-container>

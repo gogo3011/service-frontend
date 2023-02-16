@@ -28,17 +28,6 @@ export class JobsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addJob(): void {
-    this.dialogService.open(CreateEditJobComponent, {
-      header: 'Schedule a job',
-      width: '70%'
-    }).onClose.subscribe((res) => {
-      if (res) {
-        this.refresh$.next(true);
-      }
-    });
-  }
-
   editJob(job: Job): void {
     this.dialogService.open(CreateEditJobComponent, {
       header: 'Edit a job',

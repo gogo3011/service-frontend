@@ -5,11 +5,14 @@ import {BeDataService} from "../../services/be-data/be-data.service";
 import {RepairShop} from "../../models/repair-shop.model";
 import {Job} from "../../models/job.model";
 import {BaseFilter} from "../../models/filters/base-filter";
+import {CreateEditJobComponent} from "../create-edit-job/create-edit-job.component";
+import {DialogService} from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-repair-shop-details',
   templateUrl: './repair-shop-details.component.html',
-  styleUrls: ['./repair-shop-details.component.css']
+  styleUrls: ['./repair-shop-details.component.css'],
+  providers: [DialogService]
 })
 export class RepairShopDetailsComponent implements OnInit {
 
@@ -39,10 +42,25 @@ export class RepairShopDetailsComponent implements OnInit {
     shareReplay(1)
   );
 
-  constructor(private readonly route: ActivatedRoute, private readonly beData: BeDataService) {
+
+  constructor(private readonly route: ActivatedRoute, private readonly beData: BeDataService,
+              private readonly dialogService: DialogService) {
   }
 
   ngOnInit(): void {
   }
 
+  editJob(job: Job): void {
+    this.dialogService.open(CreateEditJobComponent, {
+      header: 'Edit a job',
+      width: '70%',
+      data: {
+        job: job
+      }
+    }).onClose.subscribe(res => {
+      if (res) {
+        this.refresh$.next(true);
+      }
+    })
+  }
 }

@@ -5,7 +5,7 @@
   <div class="col-12">
     <p-dataView [value]="(repairShops$ | async )!" layout="grid">
       <ng-template let-repairShop pTemplate="gridItem">
-        <div class="col-3 px-5">
+        <div class="col-3 px-5 pb-1">
           <app-repair-shop-item [repairShop]="repairShop"></app-repair-shop-item>
         </div>
       </ng-template>

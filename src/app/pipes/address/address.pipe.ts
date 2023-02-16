@@ -11,7 +11,7 @@ export class AddressPipe implements PipeTransform {
       return '';
     }
     return (value.city || '') + ' (' + (value.countryCode || '') + '), ' +
-      (value.street || '') + '' + (value.houseNumber || '');
+      (value.street || '') + ' ' + (value.houseNumber || '');
   }
 
 }
